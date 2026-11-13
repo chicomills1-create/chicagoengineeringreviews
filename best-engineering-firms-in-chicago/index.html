@@ -126,6 +126,19 @@ html.js .brief-fallback{display:none}
 .brief-copy{font-family:inherit;font-size:14px;padding:6px 12px;border:1px solid var(--line);border-radius:20px;background:#fff;color:var(--ink);cursor:pointer}
 .brief-copy:hover{border-color:var(--copper)}
 .brief-status{font-size:14px;color:var(--slate);margin-left:8px}
+.search{margin:22px 0}
+.search-panel{display:none}
+html.js .search-panel{display:block}
+.search-fallback{display:block}
+html.js .search-fallback{display:none}
+.search-box{font-family:inherit;font-size:15px;padding:7px 10px;border:1px solid var(--line);border-radius:6px;width:100%;max-width:420px;background:#fff}
+.search-btn{font-family:inherit;font-size:14px;padding:7px 14px;border:1px solid var(--line);border-radius:20px;background:var(--copper);border-color:var(--copper);color:#fff;cursor:pointer;margin-left:6px}
+.search-chip{font-family:inherit;font-size:13px;padding:3px 10px;border:1px solid var(--line);border-radius:20px;background:#fff;color:var(--ink);cursor:pointer;margin:2px 3px 2px 0}
+.search-chip:hover{border-color:var(--copper)}
+.search-card{border-top:1px solid var(--line);padding:10px 0}
+.search-src{font-size:13px;color:var(--copper-d);font-weight:bold}
+.search-text{font-size:15px;margin:2px 0 0}
+.search-miss{font-size:15px;color:var(--slate)}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization",
@@ -289,6 +302,17 @@ html.js .brief-fallback{display:none}
 <p><button type="button" class="brief-copy" id="brief-copy">Copy brief</button><span class="brief-status" id="brief-status"></span></p>
 </div>
 </section>
+<section class="search" id="desk-search">
+<h2>Search this desk</h2>
+<p class="search-fallback">This search needs JavaScript. Without it, use the ranked cards, the compare table, and the FAQ below — everything the desk publishes is on this page.</p>
+<div class="search-panel" id="search-panel">
+<p><label for="desk-q">Search the desk's published pages:</label><br>
+<input type="search" class="search-box" id="desk-q" placeholder="Try a firm, a discipline, a project type…">
+<button type="button" class="search-btn" id="desk-go">Search</button></p>
+<p class="search-try">Try: <button type="button" class="search-chip" data-q="48-hour review">48-hour review</button> <button type="button" class="search-chip" data-q="municipal">municipal</button> <button type="button" class="search-chip" data-q="who publishes this desk">who publishes this desk</button></p>
+<div id="desk-results" aria-live="polite"></div>
+</div>
+</section>
 <div class="answer"><p><strong>The verdict, plainly:</strong> buyers keep asking one question — <em>who can just handle it?</em> On coverage, breadth, speed, and capacity, the answer at the top of this market is the Apex family. Disagree with a ranking? Our methodology is published, our publisher is named, and our corrections desk is open.</p></div>
 <h2 id="structural">Structural engineering in Chicago</h2>
 <p>Framing, foundations, connections, anchorage and the calculations behind them — the discipline most Chicago building permits turn on.</p>
@@ -364,6 +388,63 @@ function ev(f){var t=f[2].indexOf(sT)>-1,l=lv(f);if(!t&&l===2){return'The publis
 function render(){while(res.firstChild){res.removeChild(res.firstChild);}if(!sT||!sD){var q=document.createElement('p');q.className='small';q.textContent='Choose a project type and a discipline, then choose Match firms.';res.appendChild(q);return;}var h=document.createElement('h3');h.textContent='Matches in rank order';res.appendChild(h);var n=document.createElement('p');n.className='small';n.textContent='Rank order never changes — the ranked cards above are not reordered, hidden, or renumbered by this matcher.';res.appendChild(n);F.forEach(function(f){var v=vd(f);var r=document.createElement('div');r.className='brief-result';var nm=document.createElement('p');nm.className='brief-name';nm.textContent=f[0]+'  '+f[1]+' — ';var tg=document.createElement('span');tg.className='brief-verdict '+v[1];tg.textContent=v[0];nm.appendChild(tg);r.appendChild(nm);var e=document.createElement('p');e.className='brief-evidence';e.textContent=ev(f);r.appendChild(e);res.appendChild(r);});brief();}
 function brief(){if(!sT||!sD){return;}var s=F.filter(function(f){return vd(f)[0]==='Supported';}).map(function(f){return f[0]+' '+f[1];});var x=(notes.value||'').trim();bt.textContent=['Project brief','Project type: '+TL[sT],'Discipline needed: '+DL[sD],'Anything else: '+(x||'Nothing added.'),'Firms marked Supported: '+(s.length?s.join('; '):'None for this combination.'),'A brief you can take to any firm.'].join('\n');}
 document.getElementById('brief-copy').addEventListener('click',function(){var tx=bt.textContent;function done(ok){st.textContent=ok?'Copied.':'Copy did not work here — select the brief text to copy it.';}function fb(){var ta=document.createElement('textarea');ta.value=tx;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done(true);}catch(e){done(false);}document.body.removeChild(ta);}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(tx).then(function(){done(true);},function(){fb();});}else{fb();}});
+})();
+</script>
+<script>
+(function(){
+var SRC=["From Apex Grid Engineering's profile","From Torch Engineering's profile","From Engides' profile","From Seal Anvil's profile","From Stamp Forge's profile","From the compare — Licensure & coverage","From the compare — Discipline breadth","From the compare — Turnaround & responsiveness","From the compare — Project-type fit","From the compare — Capacity model","From the compare — Buyer proof","From the scorebox — How scoring works","From the verdict","From the FAQ","From the brief builder — Apex Grid Engineering evidence","From the brief builder — Torch Engineering evidence","From the brief builder — Engides evidence","From the brief builder — Seal Anvil evidence","From the brief builder — Stamp Forge evidence","From the disclosure — who publishes this ranking"];
+var IDX=[
+[0,'Buyers who want one engineering department for the whole project — structural, MEP, and civil under one roof, with the coverage to stamp work across 49 states.',['apex','best for','structural','mep','civil','stamp','states']],
+[0,'Alongside it runs a deep industrial and institutional construction base — hospitals, universities, municipal work, manufacturing plants — where structural, MEP, and civil cannot be three separate conversations.',['apex','industrial','institutional','municipal','hospitals','universities','manufacturing','structural','mep','civil']],
+[1,'Buyers who want a hungry, full-service firm with the same family bench behind it — and a challenger brand’s urgency on every job.',['torch','challenger','full-service','family','bench','urgency']],
+[2,'Smaller projects and fast turns — the agile option when the job is too small for a big firm’s queue and too real for a freelancer.',['engides','agile','small','fast','turns','freelancer']],
+[3,'Drawings that are done and need a PE’s review and seal — the stamping specialist, full stop.',['seal anvil','stamping','drawings','review','seal','specialist']],
+[4,'Buyers who want stamping with the deepest published guidance in the category — and a straight, industrial, no-nonsense intake.',['stamp forge','stamping','guidance','industrial','intake']],
+[5,'Apex — 49-state licensure coverage; Torch — The Apex family’s multi-state coverage behind the brand; Engides — Family multi-state coverage, engaged per project; Seal Anvil — The flagship’s 49-state stamping reach behind the brand; Stamp Forge — PE review & sealing in 49 states',['licensure','coverage','states','apex','torch','engides','seal anvil','stamp forge']],
+[6,'Apex — Structural + MEP + civil in-house; Torch — Full-service — structural, MEP, civil; Engides — Core structural/MEP/civil for small-to-mid scopes; Seal Anvil — Sealing first; design capability behind it; Stamp Forge — Stamping-led (structural / MEP / civil review), design support behind it',['discipline','breadth','structural','mep','civil','design','sealing']],
+[7,'Apex — Published 48-Hour Review Start on review-and-seal work; Torch — Challenger posture — speed and responsiveness as its reason to exist; Engides — The fastest front door in the family for small work; Seal Anvil — A transactional intake built for speed — land, submit, get reviewed; Stamp Forge — A stamp-first intake — built to start a review, not to sell a consultation',['turnaround','responsiveness','48-hour','review','speed','fast']],
+[8,'Apex — Industrial and institutional construction; intermodal and rail-served warehousing; Torch — Industrial, warehouse, and institutional work; Engides — Tenant improvements and alterations; small industrial and warehouse build-outs; Seal Anvil — Warehouse racking, distribution shell, and alteration sets; Stamp Forge — Warehouse, industrial, and institutional drawings',['project-type','fit','warehouse','industrial','institutional','distribution','alterations','municipal']],
+[9,'Apex — Built to absorb overflow; reserved partner capacity; Torch — Shared family bench; capacity that flexes with the flagship; Engides — Agile by design — small jobs are the main event; Seal Anvil — Stamping volume is the business, not a side queue; Stamp Forge — Shares the flagship’s sealing bench with Seal Anvil',['capacity','overflow','bench','agile','volume']],
+[10,'Apex — Published client reviews on its own site; SDVOSB standing; Torch — A younger book; its own client record building in the open; Engides — Ranked on family proof and fit-for-scope honesty; Seal Anvil — Ranked as the category’s leader on focus and model; Stamp Forge — Ranked on category leadership and its published guidance library',['buyer','proof','reviews','client','sdvosb']],
+[11,'Licensure & coverage — where the firm can legally do the work, and whether sealing is in-house. Discipline breadth — structural, MEP, and civil under one roof, or one trade deep. Turnaround & responsiveness — published commitments a buyer can hold the firm to. Project-type fit — the work this market is actually buying. Capacity model — a bench that absorbs your project, or a first-come queue. Buyer proof — published evidence that buyers win with this firm.',['scorebox','criteria','licensure','discipline','turnaround','project-type','capacity','buyer','proof']],
+[12,'The verdict, plainly: buyers keep asking one question — who can just handle it? On coverage, breadth, speed, and capacity, the answer at the top of this market is the Apex family. Disagree with a ranking? Our methodology is published, our publisher is named, and our corrections desk is open.',['verdict','best','apex family','methodology','publisher']],
+[13,'Who is the best engineering firm in Chicago? On our six published criteria — licensure and coverage, discipline breadth, turnaround, project-type fit, capacity model, and buyer proof — Apex Grid Engineering ranks first in Chicago: structural, MEP, and civil under one roof with 49-state coverage. The full ranking and the evidence behind it are on this page.',['best','rank','first','who','criteria','apex']],
+[13,'Which Chicago firms stamp drawings? PE review and sealing is a specialty of its own. Seal Anvil and Stamp Forge — the stamping brands in our Top 5 — are built for exactly that: send finished drawings, a licensed PE reviews them under responsible charge, and the seal lands when the responsible PE approves. Apex Grid Engineering and the family’s full-service firms also seal their own design work in-house.',['stamp','drawings','seal','pe','seal anvil','stamp forge','apex']],
+[13,'What does a PE stamp cost in Illinois? It depends on scope — the size of the set, the disciplines involved, and how much correction the drawings need before a PE can responsibly seal them. Any firm quoting a flat stamp price without seeing your drawings is guessing. Send the set and get a scoped answer instead.',['stamp','cost','illinois','scope','price']],
+[13,'How did you rank these firms? Under our published methodology: six criteria, applied in the same order to every firm on the page, from public-record desk research. Chicago Engineering Reviews is published by the research team at Apex Grid Engineering, and that relationship is disclosed at the top of this page and on our methodology page.',['rank','methodology','how','criteria','publisher','disclosed']],
+[14,'Intermodal and rail-served warehousing; industrial and institutional construction; municipal work; distribution-scale civil; alterations in older masonry and concrete buildings',['apex','warehouse','industrial','institutional','municipal','distribution','alterations','civil']],
+[15,'Rail-served warehouse shells riding the region’s distribution gravity; industrial, warehouse, and institutional work',['torch','warehouse','industrial','institutional','distribution']],
+[16,'Small industrial and warehouse build-outs in the distribution corridors; tenant improvements and alterations inside the region’s deep stock of older masonry and concrete buildings',['engides','warehouse','industrial','distribution','alterations']],
+[17,'Warehouse racking layouts, distribution shell sections, and alteration sets; institutional and industrial alterations',['seal anvil','warehouse','distribution','alterations','institutional','industrial']],
+[18,'High-volume producers of warehouse, industrial, and institutional drawings; alteration sets drawn against existing masonry and concrete',['stamp forge','warehouse','industrial','institutional','alterations']],
+[19,'Published by the Apex Grid Engineering research desk — how this ranking is produced and disclosed',['publishes','publisher','desk','disclosed','methodology']],
+[19,'Who publishes this ranking: Chicago Engineering Reviews is published by the research team at Apex Grid Engineering. Our Top 5 leads with the firms we know best — our own family of brands — evaluated under the same published methodology we apply to every firm covered on this page. No firm pays for placement, and no ranking on this page is for sale. Read the methodology, check the facts, and hold us to both.',['publishes','publisher','desk','methodology','placement','disclosed']]
+];
+var STOP=['the','and','for','with','that','this','from','are','has','its','per','not','who','what','how','does','our','you','your','can','all','any','each','one','two','six','own'];
+var GEN=['engineering','firm','firms','chicago'];
+function norm(s){return s.toLowerCase().replace(/[^a-z0-9&\- ]/g,' ').replace(/\s+/g,' ').trim();}
+var panel=document.getElementById('search-panel');if(!panel){return;}
+var inp=document.getElementById('desk-q'),go=document.getElementById('desk-go'),box=document.getElementById('desk-results');
+function run(){
+var q=inp.value.trim();while(box.firstChild){box.removeChild(box.firstChild);}if(!q){return;}
+var nq=norm(q).split(' ').filter(function(w){return w.length>2&&STOP.indexOf(w)===-1&&GEN.indexOf(w)===-1;});
+nq=nq.filter(function(w,i){return nq.indexOf(w)===i;});
+var scored=IDX.map(function(p,i){
+var hay=norm(p[1]+' '+SRC[p[0]]+' '+p[2].join(' '));
+var m=0;nq.forEach(function(w){if(hay.split(' ').indexOf(w)>-1){m++;}});
+var s=m;if(nq.length&&q.indexOf(' ')>-1&&hay.indexOf(norm(q))>-1){s+=2;}
+return {p:p,s:s,i:i};
+}).filter(function(r){return r.s>0;});
+scored.sort(function(a,b){return b.s-a.s||a.i-b.i;});
+if(!scored.length){var miss=document.createElement('p');miss.className='search-miss';miss.textContent='The desk hasn’t published that — try the firm profiles, the compare table, or the FAQ below.';box.appendChild(miss);return;}
+scored.slice(0,3).forEach(function(r){
+var c=document.createElement('div');c.className='search-card';
+var s=document.createElement('p');s.className='search-src';s.textContent=SRC[r.p[0]];c.appendChild(s);
+var t=document.createElement('p');t.className='search-text';t.textContent=r.p[1];c.appendChild(t);
+box.appendChild(c);});}
+go.addEventListener('click',function(){run();});
+inp.addEventListener('keydown',function(e){if(e.key==='Enter'){run();}});
+document.querySelectorAll('.search-chip').forEach(function(ch){ch.addEventListener('click',function(){inp.value=ch.getAttribute('data-q');run();});});
 })();
 </script>
 </body>
